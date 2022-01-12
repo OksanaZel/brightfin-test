@@ -7,19 +7,18 @@
     <title>Document</title>
 </head>
 <body>
-   <form id="add-product" action="" enctype="multipart/form-data">
+   <form id="add-document" action="" enctype="multipart/form-data">
         <input name="file" type="file" multiple>
-        <button type="submit">Добавить товар</button>
+        <button type="submit">Upload file</button>
    </form>
    <script>
-       const formAddProduct = document.getElementById("add-product");
-       formAddProduct.addEventListener("submit", function(e){
+       const formAddDocument = document.getElementById("add-document");
+       formAddDocument.addEventListener("submit", function(e){
            e.preventDefault();
            const file = this.querySelector("[name=file]").files[0];
            console.log(file);
            const data = new FormData();
            data.append("file", file);
-        //    data.append("name", this.elements.name.value)
        })
    </script>
 </body>
