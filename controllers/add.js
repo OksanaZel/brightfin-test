@@ -69,7 +69,7 @@ const add = async (req, res) => {
     users.forEach((user) => bulk.insert(user));
     bulk.execute();
   } catch (error) {
-    await fs.unlinkSync(tempName);
+    // await fs.unlinkSync(tempName);
     throw error;
   }
 };
