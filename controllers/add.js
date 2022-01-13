@@ -7,6 +7,7 @@ const uploadDir = path.join(__dirname, "../", "public");
 
 const add = async (req, res) => {
   const { path: tempName } = req.file;
+  console.log(tempName);
   try {
     await fs
       .createReadStream(tempName)
