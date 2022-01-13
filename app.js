@@ -10,11 +10,16 @@ const app = express();
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  })
+);
 app.use(express.json());
 app.use(express.static("public"));
 
-app.post("/api/data", upload.single("files"), add);
+app.post("/api/data", upload.single("file"), add);
 app.get("/api/data", controllerWrapper(getAllUsers));
 app.get("/api/data/name", controllerWrapper(getUserByName));
 

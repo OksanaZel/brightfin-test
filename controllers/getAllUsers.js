@@ -3,7 +3,7 @@ const { User } = require("../model");
 const { sendResponse } = require("../utils");
 
 const getAllUsers = async (req, res) => {
-  const users = await User.find({}, "name");
+  const users = await User.find({});
 
   if (!users) {
     throw new NotFound("Categories not found");

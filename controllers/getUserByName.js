@@ -3,9 +3,9 @@ const { User } = require("../model");
 const { sendResponse } = require("../utils");
 
 const getUserByName = async (req, res) => {
-  const { name } = req.body;
-  const user = await User.findOne({
-    name,
+  const { name } = req.query;
+  const user = await User.find({
+    "person.lastName": name,
   });
 
   if (!user) {

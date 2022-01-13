@@ -17,7 +17,7 @@ const add = async (req, res) => {
         () => console.log("done"),
         (e) => console.log("error", e)
       );
-    await fs.unlinkSync(tempName);
+    // await fs.unlinkSync(tempName);
     const filenames = await fs.readdirSync(uploadDir);
     let headers;
     let arrTitle;
@@ -38,30 +38,34 @@ const add = async (req, res) => {
     let users = data.map((item) => {
       let userDate = item[arrTitle.indexOf("date")]
         ? item[arrTitle.indexOf("date")].split("/").reverse().join("-")
+        : new Date();
+      let userNormDate = new Date(userDate);
+      let userAmount = Number(item[arrTitle.indexOf("amount")]);
+      let userPhone = item[arrTitle.indexOf("phone")]
+        ? `+380${item[arrTitle.indexOf("phone")].replace(/[^0-9]/g, "")}`
         : "undefind";
-      let normDate = new Date(userDate).toLocaleDateString("en-CA");
-      let normCc = item[arrTitle.indexOf("cc")]
+      let userCc = item[arrTitle.indexOf("cc")]
         ? item[arrTitle.indexOf("cc")].replace(/[^0-9]/g, "")
         : "";
       let userObj = {
         name: `${item[arrTitle.indexOf("last_name")]} ${
           item[arrTitle.indexOf("first_name")]
         }`,
-        phone: item[arrTitle.indexOf("phone")],
+        phone: userPhone,
         person: {
           firstName: item[arrTitle.indexOf("first_name")],
           lastName: item[arrTitle.indexOf("last_name")],
         },
-        amount: Number(item[arrTitle.indexOf("amount")]),
-        date: normDate,
-        costCenterNum: normCc,
+        amount: Math.floor(userAmount * 100) / 100,
+        date: userNormDate,
+        costCenterNum: userCc,
       };
       return userObj;
     });
 
     const outPath = path.join(__dirname, "../", "public", "users.json");
     await fs.writeFileSync(outPath, JSON.stringify(users));
-    var bulk = User.collection.initializeOrderedBulkOp();
+    let bulk = User.collection.initializeOrderedBulkOp();
     users.forEach((user) => bulk.insert(user));
     bulk.execute();
   } catch (error) {
