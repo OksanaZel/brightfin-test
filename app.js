@@ -14,7 +14,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
-app.post("/api/data", upload.single("file"));
+// app.post("/api/data", upload.single("file"));
+app.post("/api/data", (request, response) => {
+  console.log(request.body);
+  console.log(response);
+});
 app.get("/api/data", controllerWrapper(getAllUsers));
 app.get("/api/data/name", controllerWrapper(getUserByName));
 
