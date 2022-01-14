@@ -1,10 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const logger = require("morgan");
-const { upload } = require("./middlewares");
+const { upload, controllerWrapper } = require("./middlewares");
 const { add, getAllUsers, getUserByName } = require("./controllers");
-const { controllerWrapper } = require("./middlewares");
-require("dotenv").config();
+// const { controllerWrapper } = require("./middlewares");
+// require("dotenv").config();
 
 const app = express();
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
@@ -13,9 +13,8 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
-app.use(express.static("temp"));
 
-app.post("/api/data", upload.single("file"), add);
+app.post("/api/data", upload.single("file"));
 app.get("/api/data", controllerWrapper(getAllUsers));
 app.get("/api/data/name", controllerWrapper(getUserByName));
 
